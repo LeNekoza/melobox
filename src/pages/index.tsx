@@ -224,6 +224,7 @@ const Player:React.FC<{url:string}> = ({url}) =>(
   src={url}
   onPlay={e => console.log("onPlay")}
   autoPlayAfterSrcChange={true}
+  muted={true}
   className='sticky bottom-0 z-50'
   />
 
