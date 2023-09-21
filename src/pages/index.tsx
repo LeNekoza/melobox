@@ -21,13 +21,15 @@ export default function Home() {
      try{
       const res = await fetch('/api/fetch?url='+thisurl);
       if(res.ok){
-         const resdata = await 
+         /* const resdata = await 
         res.json();
         const checkForBetterBit = await resdata.resvalue.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
          if(typeof checkForBetterBit === 'string'){
             setAudurl(checkForBetterBit)
-         }
-        console.log(res.status)
+         } */
+         const resdata = await res.json();
+        setAudurl(resdata.resvalue)
+        /* console.log(res.status) */
       }
         }
           
@@ -190,18 +192,21 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
       const handleDownload=(id:string)=>{
+        console.log("Button Clicked")
         async function downloadVideo(thisurl:string) {
           let audioFormats:Array<Object> = []
          try{
           const res = await fetch('/api/fetch?url='+thisurl);
           if(res.ok){
-             const resdata = await 
+            /*  const resdata = await 
             res.json();
             const checkForBetterBit = await resdata.resvalue.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
              if(typeof checkForBetterBit === 'string'){
                 urlhandler(checkForBetterBit)
-             }
-            console.log(res.status)
+             } */
+             const resdata = await res.json();
+             urlhandler(resdata.resvalue)
+            /* console.log(res.status) */
           }
             }
               

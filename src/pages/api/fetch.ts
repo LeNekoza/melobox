@@ -12,7 +12,7 @@ return}
   const handlerUrl= async()=>{
     let audioFormats:Array<Object> = []
     let audioIndex = 0
-    const info = await ytdl.getInfo(req.query.url as string)
+    /* const info = await ytdl.getInfo(req.query.url as string)
       .then((info)=>{
         info.formats.map((format)=>{
           if(format.mimeType?.slice(0,5) === "audio"){
@@ -20,9 +20,16 @@ return}
             audioIndex++
           }
         })
-      })
-
-      res.status(200).json({resvalue:audioFormats})      
+        
+      }) */
+      const info = await ytdl.getInfo(req.query.url as string);
+      const bestFormat = ytdl.chooseFormat(info.formats, {
+        quality: "highest",
+        filter: "audioonly",
+      });
+      console.log("bestFormat", bestFormat);
+      res.status(200).json({resvalue: bestFormat.url})
+      /* res.status(200).json({resvalue:audioFormats})    */   
     } 
 
       handlerUrl()
