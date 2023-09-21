@@ -105,7 +105,7 @@ const Searchbox:React.FC<{recievedData:Function}>=({recievedData})=>{
       return console.log("NO INPUT")
     
     }
-    const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY}&type=video&q=official english song ${search}`)
+    const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY3}&type=video&q=official english song ${search}`)
     const data = await res.json()
           if(data.error){
             console.log("Shit!: "+ data.error)
@@ -173,7 +173,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
   useEffect(() => {
         async function fetchYTData() {
           try{
-          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY2}&type=video&q=${fixedq}`)
+          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY3}&type=video&q=${fixedq}`)
           const data = await res.json()
           if(data.error){
             console.log("Shit!: "+ data.error)
@@ -192,7 +192,6 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
       const handleDownload=(id:string)=>{
         async function downloadVideo(thisurl:string) {
           let audioFormats:Array<Object> = []
-          let audioIndex = 0
          try{
           const res = await fetch('/api/fetch?url='+thisurl);
           if(res.ok){
@@ -204,20 +203,6 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
              }
             console.log(res.status)
           }
-              /* const info = await ytdl.getInfo(url)
-
-              let audioIndex = 0
-               await
-                info.formats.map((format)=>{
-                  if(format.mimeType?.slice(0,5) === "audio"){
-                    audioFormats[audioIndex] = format
-                    audioIndex++
-                  }
-                })
-              const checkForBetterBit = await audioFormats.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
-             if(typeof checkForBetterBit === 'string'){
-                urlhandler(checkForBetterBit)
-             } */
             }
               
                      
@@ -233,26 +218,32 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
 
   return(
    
-        <div className='bg-palfive w-auto h-[50em]'>  
+        <div className='bg-paltwo w-auto h-[50em] rounded-lg'>  
         <ul className='grid gap-5 py-2 px-3'>
             {data.map((item,i)=>(
+            
 <li key={i}>
-<div className='bg-palthree grid grid-cols-3 overflow-hidden h-[5em]'>
+<div className='bg-stone-900 grid grid-cols-3 gap-5 overflow-hidden h-[5em]  rounded-lg'>
 <div className='relative w-[5em] lg:w-[10em] h-[5em]'>
   <Image
-    className='z-10'
+    className='z-10 noselect'
     src={item.thumbnailurl}
     alt={`photo of ${item.videotitle}`}
     layout="fill" 
     objectFit="cover" 
   />
 </div>
-<h1 className='text-palfour underline underline-offset-[0.5em] ml-1 lg:ml-5'>{item.videotitle.substring(0,30)+'...'}</h1>
-<button className='text-[2em]' onClick={()=>handleDownload(item.videoid)}>▶️</button>
+<div className='flex items-center'>
+<h1 className='text-palfour underline underline-offset-[0.5em] ml-1 lg:ml-5 tracking-tight noselect '>{item.videotitle.substring(0,30)+'...'}</h1>
+</div>
+<button className='text-[2em] flex justify-center items-center bg-black focus:bg-black/50 fill-white active:fill-lime-400' onClick={()=>handleDownload(item.videoid)}>
+<svg  width="30" height="30" viewBox="0 0 1200 1200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<path opacity="1.00" d=" M 228.84 104.20 C 515.28 265.18 801.74 426.11 1088.21 587.02 C 801.76 747.95 515.30 908.86 228.88 1069.84 C 258.29 1033.57 284.46 994.74 308.62 954.81 C 347.67 889.65 380.67 820.47 402.40 747.55 C 415.09 704.75 423.71 660.61 426.12 615.98 C 428.76 568.50 423.54 520.81 413.21 474.46 C 403.38 430.51 388.98 387.66 371.58 346.14 C 346.93 287.56 316.41 231.53 281.80 178.25 C 265.18 152.86 247.86 127.87 228.84 104.20 Z" />
+</svg>
+</button>
 </div>
 </li>
      ))}
-     {/* <button onClick={handleDownload} className='bg-yellow-500 w-1/5 active:bg-green-500'>😁</button> */}
      </ul>
   </div>
   )
