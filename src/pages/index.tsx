@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useRef, useState  } from 'react'
 import ytdl from 'ytdl-core'
+import axios  from 'axios';
+
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 const inter = Inter({subsets:['latin']});
@@ -144,7 +146,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
   useEffect(() => {
         async function fetchYTData() {
           try{
-          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY2}&type=video&q=${fixedq}`)
+          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY}&type=video&q=${fixedq}`)
           const data = await res.json()
           if(data.error){
             console.log("Shit!: "+ data.error)
@@ -163,8 +165,20 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
       const handleDownload=(id:string)=>{
         async function downloadVideo(thisurl:string) {
           let audioFormats:Array<Object> = []
-          try {
-              const info = await ytdl.getInfo(thisurl,{requestOptions: { method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json',}}})
+          let audioIndex = 0
+         try{
+          const res = await fetch('/api/fetch?url='+thisurl);
+          if(res.ok){
+             const resdata = await 
+            res.json();
+            const checkForBetterBit = await resdata.resvalue.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
+             if(typeof checkForBetterBit === 'string'){
+                urlhandler(checkForBetterBit)
+             }
+            console.log(res.status)
+          }
+              /* const info = await ytdl.getInfo(url)
+
               let audioIndex = 0
                await
                 info.formats.map((format)=>{
@@ -176,10 +190,10 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
               const checkForBetterBit = await audioFormats.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
              if(typeof checkForBetterBit === 'string'){
                 urlhandler(checkForBetterBit)
-             }
+             } */
+            }
               
-             
-          }  
+                     
           catch (err) {
               console.error("Try failed: ",err);
               return audioFormats
