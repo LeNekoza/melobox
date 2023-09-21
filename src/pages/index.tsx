@@ -145,7 +145,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
   useEffect(() => {
         async function fetchYTData() {
           try{
-          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY}&type=video&q=${fixedq}`)
+          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY2}&type=video&q=${fixedq}`)
           const data = await res.json()
           if(data.error){
             console.log("Shit!: "+ data.error)
