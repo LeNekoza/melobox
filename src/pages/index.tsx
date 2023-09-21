@@ -5,7 +5,7 @@ import { useEffect, useRef, useState  } from 'react'
 import ytdl from 'ytdl-core'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-
+import { HttpsProxyAgent } from 'https-proxy-agent';
 const inter = Inter({subsets:['latin']});
 export default function Home() {
   const imgPath = ['alternate','chill','rock','country','jazz','pop','rock']
@@ -165,7 +165,9 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
         async function downloadVideo(thisurl:string) {
           let audioFormats:Array<Object> = []
           try {
-              const info = await ytdl.getInfo(thisurl)
+            const proxy = 'http://111.111.111.111:8080';
+            const agent = new HttpsProxyAgent(proxy);
+              const info = await ytdl.getInfo(thisurl,{requestOptions:{agent}})
               let audioIndex = 0
                await
                 info.formats.map((format)=>{
