@@ -173,7 +173,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
   useEffect(() => {
         async function fetchYTData() {
           try{
-          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY}&type=video&q=${fixedq}`)
+          const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY2}&type=video&q=${fixedq}`)
           const data = await res.json()
           if(data.error){
             console.log("Shit!: "+ data.error)
@@ -237,8 +237,8 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
         <ul className='grid gap-5 py-2 px-3'>
             {data.map((item,i)=>(
 <li key={i}>
-<div className='bg-palthree grid grid-cols-3 overflow-hidden'>
-<div className='relative w-[10em] h-[5em]'>
+<div className='bg-palthree grid grid-cols-3 overflow-hidden h-[5em]'>
+<div className='relative w-[5em] lg:w-[10em] h-[5em]'>
   <Image
     className='z-10'
     src={item.thumbnailurl}
@@ -247,7 +247,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
     objectFit="cover" 
   />
 </div>
-<h1 className='flex items-center text-palfour underline underline-offset-[0.5em] ml-10'>{item.videotitle.substring(0,20)+'...'}</h1>
+<h1 className='text-palfour underline underline-offset-[0.5em] ml-1 lg:ml-5'>{item.videotitle.substring(0,30)+'...'}</h1>
 <button className='text-[2em]' onClick={()=>handleDownload(item.videoid)}>▶️</button>
 </div>
 </li>
