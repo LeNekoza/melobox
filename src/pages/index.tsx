@@ -1,18 +1,48 @@
 "use client";
 import { Inter } from 'next/font/google'
 import Image from 'next/image'
-import { useEffect, useRef, useState  } from 'react'
-import ytdl from 'ytdl-core'
-import axios  from 'axios';
-
+import { it } from 'node:test';
+import { useEffect, useState  } from 'react'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 const inter = Inter({subsets:['latin']});
 export default function Home() {
   const imgPath = ['alternate','chill','rock','country','jazz','pop','rock']
-  const [searchData, setSearchData] = useState('');
+  interface statetype{
+    videotitle:string,
+    videoid:string,
+    thumbnailurl:string,
+ }
+  const [searchData, setSearchData] =  useState<statetype[]>([]);
+
+  const handleDownload=(id:string)=>{
+    async function downloadVideo(thisurl:string) {
+      let audioFormats:Array<Object> = []
+     try{
+      const res = await fetch('/api/fetch?url='+thisurl);
+      if(res.ok){
+         const resdata = await 
+        res.json();
+        const checkForBetterBit = await resdata.resvalue.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
+         if(typeof checkForBetterBit === 'string'){
+            setAudurl(checkForBetterBit)
+         }
+        console.log(res.status)
+      }
+        }
+          
+                 
+      catch (err) {
+          console.error("Try failed: ",err);
+          return audioFormats
+      }
+      
+  }
+  const url = 'https://www.youtube.com/watch?v='+id;
+  downloadVideo(url)
+}
   const [audurl,setAudurl] = useState<string>('')
-  const handleData = (data:string)=>{
+  const handleData = (data:statetype[])=>{
     setSearchData(data)
   }
   const handleFetchURL = async (url:string) =>{
@@ -22,24 +52,16 @@ export default function Home() {
     <div className={inter.className}>
      <Nav navProps={handleData} />
       {
-        searchData === 'Not Found'?<div className='bg-palone text-palfour gap-5 font-bold flex flex text-center justify-center py-2'>
-        <h1 className='relative translate-y-1'>Not Found</h1>
-        </div>:
-        searchData ===''?null:
-        <div className='bg-palone text-palfour gap-5 font-bold flex flex text-center justify-center py-2'>
-            <h1 className='relative translate-y-1'>{searchData}</h1>
-            <button type='submit' className='text-[1.5em]'>▶️</button>
+        searchData.length === 0 ? <div className='w-full bg-palfour h-[0.1em]'></div> :
+        searchData === null? <div className='w-full bg-palfour h-[0.1em]'></div> :
+        searchData === undefined? <div className='w-full bg-palfour h-[0.1em]'></div> :
+        searchData.map((item,i)=>(
+        <div key={"thekeyis"+i} className='bg-palone text-palfour gap-5 font-bold flex flex text-center justify-center py-2'>
+            <h1 className='relative translate-y-1'>{item.videotitle}</h1>
+            <button type='submit' className='text-[1.5em]' onClick={()=>handleDownload(item.videoid)}>▶️</button>
         </div>
+        ))
       }
-     
-    {/*  <div id='reference-colors' className='flex text-center noselect'>
-      <h1 className='text-white px-2'>Reference:</h1>
-      <div className='w-1/5 bg-palone'>Palone</div>
-      <div className='w-1/5 bg-paltwo'>Paltwo</div>
-      <div className='w-1/5 bg-palthree'>Palthree</div>
-      <div className='w-1/5 bg-palfour'>Palfour</div>
-      <div className='w-1/5 bg-palfive'>Palfive</div>
-      </div> */}
       <GenreAuto imgp={imgPath}/>
     <div className='w-full bg-palfour h-auto text-center text-[1.2em] mt-5 z-10 noselect'>
       <p>👾👾👾👾👾👾</p></div>
@@ -84,10 +106,15 @@ const Searchbox:React.FC<{recievedData:Function}>=({recievedData})=>{
     
     }
     const res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=surfing&key=${process.env.NEXT_PUBLIC_APIKEY}&type=video&q=official english song ${search}`)
-    const data = await res.json().then((data)=>data.items[0].snippet.title)
+    const data = await res.json()
+          if(data.error){
+            console.log("Shit!: "+ data.error)
+            return
+          }
+  const v_data = await data.items.map((item:any)=>{return {videotitle:item.snippet.title,videoid:item.id.videoId,thumbnailurl:item.snippet.thumbnails.default.url}})
     setSearched(true)
-    recievedData(data)
-    console.log(data)}
+    recievedData(v_data)
+    console.log(v_data)}
     catch(err){
       console.log(
         "NO MATCH FOUND")
@@ -235,7 +262,11 @@ const Player:React.FC<{url:string}> = ({url}) =>(
 
 <AudioPlayer
   src={url}
-  onPlay={e => console.log("onPlay")}
+  onPlay={e => console.log("playing...")}
+  onLoadedData={e => console.log("loaded data")}
+  onError={e => console.log("error from audio component:" + e)}
+  onPause={e => console.log("paused...")}
+  onCanPlayThrough={e => console.log("can play through")}
   autoPlayAfterSrcChange={true}
   muted={true}
   className='sticky bottom-0 z-50'
