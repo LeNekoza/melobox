@@ -3,8 +3,10 @@ import { Inter } from 'next/font/google'
 import Image from 'next/image'
 import { it } from 'node:test';
 import { useEffect, useState  } from 'react'
+ 
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import ReactAudioPlayer from 'react-audio-player';
 const inter = Inter({subsets:['latin']});
 export default function Home() {
   const imgPath = ['alternate','chill','rock','country','jazz','pop','rock']
@@ -27,8 +29,9 @@ export default function Home() {
          if(typeof checkForBetterBit === 'string'){
             setAudurl(checkForBetterBit)
          } */
-         const resdata = await res.json();
-        setAudurl(resdata.resvalue)
+         /* const resdata = await res.json();
+        setAudurl(resdata.resvalue) */
+        setAudurl(URL.createObjectURL(await res.blob()))
         /* console.log(res.status) */
       }
         }
@@ -68,8 +71,8 @@ export default function Home() {
     <div className='w-full bg-palfour h-auto text-center text-[1.2em] mt-5 z-10 noselect'>
       <p>👾👾👾👾👾👾</p></div>
       <div className='grid md:grid-cols-2 w-full gap-10 px-[2em]'>
-      <SongList fixedq='official english songs' urlhandler={handleFetchURL} />
-      <SongList fixedq='vevo old english songs ' urlhandler={handleFetchURL}/>
+      {/* <SongList fixedq='official english songs' urlhandler={handleFetchURL} /> */}
+      {/* <SongList fixedq='vevo old english songs ' urlhandler={handleFetchURL}/> */}
       </div>
       <br/>
       <br/>
@@ -254,23 +257,25 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
   )
 }
 
-const Player:React.FC<{url:string}> = ({url}) =>(
-
-<AudioPlayer
+const Player:React.FC<{url:string}> = ({url}) =>{
+  console.log(url)
+  return(
+  <ReactAudioPlayer
+  controls
   src={url}
-  onPlay={e => console.log("playing...")}
-  onLoadedData={e => console.log("loaded data")}
-  onError={e => console.log("error from audio component:" + e)}
-  onPause={e => console.log("paused...")}
-  onCanPlayThrough={e => console.log("can play through")}
-  autoPlayAfterSrcChange={true}
-  muted={true}
-  className='sticky bottom-0 z-50'
+  id='audioControl'
+  autoPlay
+  muted={false}
+  onError={(e)=>console.log({e})}
+  className='sticky bottom-0 z-50 w-full'
   />
+)
 
-  )
-
-
-
-
-
+}
+/* <ReactAudioPlayer
+  src={url}
+  autoPlay
+  controls
+  muted={true}
+  onError={(e)=>console.log(e)}
+  className='sticky bottom-0 z-50'/> */
