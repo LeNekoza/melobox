@@ -31,7 +31,8 @@ return}
       .audioBitrate(128)
       .audioCodec('libmp3lame')
       .format('mp3')
-      ffmpegCommand.pipe(res,{end:true})
+      resolve(ffmpegCommand.pipe(res,{end:true}))
+      reject(console.log('error'+ ' ' + ffmpegCommand))
       /* .on('end', ()=>{
         resolve(console.log('finished downloading'));
     })
