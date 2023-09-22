@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ["@ffmpeg/ffmpeg"],
     serverComponentsExternalPackages: ["ffmpeg-static"],
   },
   reactStrictMode: true,

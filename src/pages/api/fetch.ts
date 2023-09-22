@@ -3,16 +3,16 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import ytdl from 'ytdl-core'
 import Ffmpeg from 'fluent-ffmpeg'
 import ffmpegPath from 'ffmpeg-static'
-import fs from 'fs'
 type Data = {
   resvalue:Object[]|string
 }
 
 Ffmpeg.setFfmpegPath(ffmpegPath as string)
 export default function handler(req: NextApiRequest,res: NextApiResponse<Data>) {
-  if(req.query.url === 'Hello')
+  /* if(req.query.url === 'Hello')
   { res.status(200).json({resvalue:'Hello from API'})
-return}
+return} */
+try{
   const handlerUrl= async()=>{
     let audioFormats:Array<Object> = []
     let audioIndex = 0
@@ -25,7 +25,7 @@ return}
       /* console.log("bestFormat", bestFormat); */
       
      /*  res.status(200).json({resvalue: bestFormat.url}) */
-     try{
+    
      await new Promise((resolve, reject) => {
       const ffmpegCommand = Ffmpeg().input(ytdl.downloadFromInfo(info, { format: bestFormat }))
       .audioBitrate(128)
@@ -42,9 +42,12 @@ return}
         reject(err);})
     .save(`./temp_files/nowplaying.mp3`) */
       })
+     
     }
+    handlerUrl()
+  }
     catch(error){
-      console.log(error)
+      console.log("API /fetch error")
     }
       /* const audioFile = `./temp_files/nowplaying.mp3`
       const stream = fs.createReadStream(audioFile)
@@ -58,12 +61,12 @@ return}
   
     
 
-      handlerUrl()
+     
     
  
   
     
   
 
-}
+
 
