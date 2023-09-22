@@ -25,28 +25,34 @@ return}
       /* console.log("bestFormat", bestFormat); */
       
      /*  res.status(200).json({resvalue: bestFormat.url}) */
+     try{
      await new Promise((resolve, reject) => {
-      Ffmpeg().input(ytdl.downloadFromInfo(info, { format: bestFormat }))
+      const ffmpegCommand = Ffmpeg().input(ytdl.downloadFromInfo(info, { format: bestFormat }))
       .audioBitrate(128)
       .audioCodec('libmp3lame')
       .format('mp3')
-      .on('end', ()=>{
+      ffmpegCommand.pipe(res,{end:true})
+      /* .on('end', ()=>{
         resolve(console.log('finished downloading'));
     })
 
     .on('error', (err)=>{
         console.log("Error downloading and converting audio:",err);
         reject(err);})
-    .save(`./temp_files/${info.videoDetails.title.slice(0,10)}.mp3`)
+    .save(`./temp_files/nowplaying.mp3`) */
       })
-      const audioFile = `./temp_files/${info.videoDetails.title.slice(0,10)}.mp3`
+    }
+    catch(error){
+      console.log(error)
+    }
+      /* const audioFile = `./temp_files/nowplaying.mp3`
       const stream = fs.createReadStream(audioFile)
       res.setHeader('Content-Type', 'audio/mpeg')
       stream.pipe(res);
-      
+
       stream.on('close', ()=>{
         fs.unlinkSync(audioFile)
-      })
+      }) */
     } 
   
     

@@ -207,8 +207,9 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
              if(typeof checkForBetterBit === 'string'){
                 urlhandler(checkForBetterBit)
              } */
-             const resdata = await res.json();
-             urlhandler(resdata.resvalue)
+            /*  const resdata = await res.json();
+             urlhandler(resdata.resvalue) */
+             urlhandler(URL.createObjectURL(await res.blob()))
             /* console.log(res.status) */
           }
             }
