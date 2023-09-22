@@ -71,8 +71,8 @@ export default function Home() {
     <div className='w-full bg-palfour h-auto text-center text-[1.2em] mt-5 z-10 noselect'>
       <p>👾👾👾👾👾👾</p></div>
       <div className='grid md:grid-cols-2 w-full gap-10 px-[2em]'>
-      {/* <SongList fixedq='official english songs' urlhandler={handleFetchURL} /> */}
-      {/* <SongList fixedq='vevo old english songs ' urlhandler={handleFetchURL}/> */}
+      <SongList fixedq='official english songs' urlhandler={handleFetchURL} />
+      <SongList fixedq='vevo old english songs ' urlhandler={handleFetchURL}/>
       </div>
       <br/>
       <br/>
