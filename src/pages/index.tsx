@@ -21,7 +21,13 @@ export default function Home() {
     async function downloadVideo(thisurl:string) {
       let audioFormats:Array<Object> = []
      try{
-      const res = await fetch('/api/fetch?url='+thisurl);
+      const res = await fetch('https://z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
+        method:'POST',
+        body:thisurl,
+        headers:{
+          'Content-Type':'text/plain'
+        },
+      });
       if(res.ok){
          /* const resdata = await 
         res.json();
@@ -199,7 +205,13 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
         async function downloadVideo(thisurl:string) {
           let audioFormats:Array<Object> = []
          try{
-          const res = await fetch('/api/fetch?url='+thisurl);
+          const res = await fetch('https://z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
+            method:'POST',
+            body:thisurl,
+            headers:{
+              'Content-Type':'text/plain'
+            },
+          });
           if(res.ok){
             /*  const resdata = await 
             res.json();
