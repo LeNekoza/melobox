@@ -21,7 +21,7 @@ export default function Home() {
     async function downloadVideo(thisurl:string) {
       let audioFormats:Array<Object> = []
      try{
-      const res = await fetch('https://z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
+      const res = await fetch('https://p3000-z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
         method:'POST',
         body:thisurl,
         headers:{
@@ -29,16 +29,8 @@ export default function Home() {
         },
       });
       if(res.ok){
-         /* const resdata = await 
-        res.json();
-        const checkForBetterBit = await resdata.resvalue.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
-         if(typeof checkForBetterBit === 'string'){
-            setAudurl(checkForBetterBit)
-         } */
-         /* const resdata = await res.json();
-        setAudurl(resdata.resvalue) */
+      
         setAudurl(URL.createObjectURL(await res.blob()))
-        /* console.log(res.status) */
       }
         }
           
@@ -205,7 +197,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
         async function downloadVideo(thisurl:string) {
           let audioFormats:Array<Object> = []
          try{
-          const res = await fetch('https://z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
+          const res = await fetch('https://p3000-z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
             method:'POST',
             body:thisurl,
             headers:{
@@ -213,20 +205,10 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
             },
           });
           if(res.ok){
-            /*  const resdata = await 
-            res.json();
-            const checkForBetterBit = await resdata.resvalue.reduce((prev:any, current:any) => (prev.audioBitrate > current.audioBitrate) ? prev.url:  current.url)
-             if(typeof checkForBetterBit === 'string'){
-                urlhandler(checkForBetterBit)
-             } */
-            /*  const resdata = await res.json();
-             urlhandler(resdata.resvalue) */
              urlhandler(URL.createObjectURL(await res.blob()))
-            /* console.log(res.status) */
           }
             }
-              
-                     
+     
           catch (err) {
               console.error("Try failed: ",err);
               return audioFormats
@@ -273,7 +255,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
 const Player:React.FC<{url:string}> = ({url}) =>{
   console.log(url)
   return(
-  <ReactAudioPlayer
+  <audio
   controls
   src={url}
   id='audioControl'
@@ -285,10 +267,3 @@ const Player:React.FC<{url:string}> = ({url}) =>{
 )
 
 }
-/* <ReactAudioPlayer
-  src={url}
-  autoPlay
-  controls
-  muted={true}
-  onError={(e)=>console.log(e)}
-  className='sticky bottom-0 z-50'/> */
