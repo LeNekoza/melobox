@@ -21,7 +21,7 @@ export default function Home() {
     async function downloadVideo(thisurl:string) {
       let audioFormats:Array<Object> = []
      try{
-      const res = await fetch('https://p3000-z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
+      const res = await fetch('https://melobone.onrender.com/',{
         method:'POST',
         body:thisurl,
         headers:{
@@ -59,7 +59,7 @@ export default function Home() {
         searchData === null? <div className='w-full bg-palfour h-[0.1em]'></div> :
         searchData === undefined? <div className='w-full bg-palfour h-[0.1em]'></div> :
         searchData.map((item,i)=>(
-        <div key={"thekeyis"+i} className='bg-palone text-palfour gap-5 font-bold flex flex text-center justify-center py-2'>
+        <div key={"thekeyis"+i} className='bg-palone text-palfour gap-5 font-bold flex text-center justify-center py-2'>
             <h1 className='relative translate-y-1'>{item.videotitle}</h1>
             <button type='submit' className='text-[1.5em]' onClick={()=>handleDownload(item.videoid)}>▶️</button>
         </div>
@@ -197,7 +197,7 @@ const SongList:React.FC<{ fixedq: string; urlhandler: (url: string) => void }> =
         async function downloadVideo(thisurl:string) {
           let audioFormats:Array<Object> = []
          try{
-          const res = await fetch('https://p3000-z29c6aed8-zce7ec545-gtw.zb20e5e48.qovery.fr/',{
+          const res = await fetch('https://melobone.onrender.com/',{
             method:'POST',
             body:thisurl,
             headers:{
